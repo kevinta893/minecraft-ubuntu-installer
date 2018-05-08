@@ -118,5 +118,6 @@ REBOOT_COMMAND="@reboot screen -dmS mineserver ~/McMyAdmin/MCMA2_Linux_x86_64"
 
 echo "============================"
 echo "Install done!"
+echo "You may remove the installation script now."
 echo "Start the server by: '$REBOOT_COMMAND'"
 echo "OR use 'sudo reboot' and the server will boot on restart"

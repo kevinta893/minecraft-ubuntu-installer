@@ -2,10 +2,10 @@
 #intended for Ubuntu installs
 
 
-#initial settings
+#Setup your intial settings here first!
 MCMYADMIN_INITIAL_PASSWORD=pleasechangeme
 TIMEZONE=America/Edmonton
-MINECRAFT_PORT=25565
+MINECRAFT_PORT=25565				#25565 is the default minecraft port
 
 
 

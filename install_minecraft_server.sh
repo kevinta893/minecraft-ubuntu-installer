@@ -40,10 +40,21 @@ sudo apt-get -y install openjdk-8-jre
 cd ~
 wget https://raw.githubusercontent.com/kevinta893/minecraft-ubuntu-installer/master/backup_mcmyadmin.sh
 wget https://raw.githubusercontent.com/kevinta893/minecraft-ubuntu-installer/master/backup_saves.sh
+chmod +x backup_mcmyadmin.sh
+chmod +x backup_saves.sh
+
 
 #Apply s3 backup URL to scripts
-sed -i 's/S3_BACKUP_URL="s3://some-s3-bucket"/S3_BACKUP_URL="$S3_BACKUP_URL"/g' backup_mcmyadmin.sh
-sed -i 's/S3_BACKUP_URL="s3://some-s3-bucket"/S3_BACKUP_URL="$S3_BACKUP_URL"/g' backup_saves.sh
+sed -i 's|S3_BACKUP_URL=\"s3://some-s3-bucket\"|S3_BACKUP_URL="$S3_BACKUP_URL"|g' backup_mcmyadmin.sh
+sed -i 's|S3_BACKUP_URL=\"s3://some-s3-bucket\"|S3_BACKUP_URL="$S3_BACKUP_URL"|g' backup_saves.sh
+
+
+#setup crontab for scheduled backups
+WEEKLY_FULL_BACKUP="30 5 * * 3 ~/backup_mcmyadmin.sh"
+(crontab -l | grep $WEEKLY_FULL_BACKUP) || (crontab -l 2>/dev/null; echo $WEEKLY_FULL_BACKUP) | crontab -
+DAILY_BACKUP="0 5 * * * ~/backup_saves.sh"
+(crontab -l | grep $DAILY_BACKUP) || (crontab -l 2>/dev/null; echo $DAILY_BACKUP) | crontab -
+
 
 
 #=============

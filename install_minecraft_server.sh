@@ -8,16 +8,17 @@ TIMEZONE=America/Edmonton
 MINECRAFT_PORT=25565				#25565 is the default minecraft port
 
 
+#AWS s3 link, you can set this up in the backup scripts individually if not set
+S3_BACKUP_URL="s3://some-s3-bucket"
 
-#update system first
-sudo apt-get -y update
+
+
 
 #=======================
 #General setup
 
-#install Java 8 runtime
-sudo apt-get -y install openjdk-8-jre
-
+#update system first
+sudo apt-get -y update
 
 #setup timezone for your server. To see avaliable timezones on linux, see "ls /usr/share/zoneinfo" and copy the appropriate timezone file
 sudo cp /usr/share/zoneinfo/$TIMEZONE /etc/localtime
@@ -25,9 +26,25 @@ w
 
 #Other tools
 sudo apt-get -y install unzip
+sudo apt-get -y install zip
 sudo apt-get -y install nano
 sudo apt-get -y install wget
 sudo apt-get -y install cron
+
+#install Java 8 runtime
+sudo apt-get -y install openjdk-8-jre
+
+
+
+#grab backup scripts
+cd ~
+wget https://raw.githubusercontent.com/kevinta893/minecraft-ubuntu-installer/master/backup_mcmyadmin.sh
+wget https://raw.githubusercontent.com/kevinta893/minecraft-ubuntu-installer/master/backup_saves.sh
+
+#Apply s3 backup URL to scripts
+sed -i 's/S3_BACKUP_URL="s3://some-s3-bucket"/S3_BACKUP_URL="$S3_BACKUP_URL"/g' backup_mcmyadmin.sh
+sed -i 's/S3_BACKUP_URL="s3://some-s3-bucket"/S3_BACKUP_URL="$S3_BACKUP_URL"/g' backup_saves.sh
+
 
 #=============
 #setup AWS CLI for backups
@@ -83,13 +100,6 @@ sudo iptables -A INPUT -p tcp -m tcp --dport $MINECRAFT_PORT -j ACCEPT 			#Defau
 #setup crontab to start server when server reboots
 REBOOT_COMMAND="@reboot screen -dmS mineserver ~/McMyAdmin/MCMA2_Linux_x86_64"
 (crontab -l | grep $REBOOT_COMMAND) || (crontab -l 2>/dev/null; echo $REBOOT_COMMAND) | crontab -
-
-
-#add Secruity permission to run AWS S3 Backup script
-echo "Adding McMyAdmin permission to run S3 Backup script."
-sed -i 's/Security.AllowExec=False/Security.AllowExec=True/g' ~/McMyAdmin/McMyAdmin.conf
-echo "Copying backup script to scripts"
-
 
 
 

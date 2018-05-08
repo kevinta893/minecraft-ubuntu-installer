@@ -81,7 +81,7 @@ sudo iptables -A INPUT -p tcp -m tcp --dport $MINECRAFT_PORT -j ACCEPT 			#Defau
 /sbin/iptables-save
 
 #setup crontab to start server when server reboots
-REBOOT_COMMAND="@reboot cd ~/McMyAdmin && screen -dmS mineserver ./MCMA2_Linux_x86_64"
+REBOOT_COMMAND="@reboot screen -dmS mineserver ~/McMyAdmin/MCMA2_Linux_x86_64"
 (crontab -l | grep $REBOOT_COMMAND) || (crontab -l 2>/dev/null; echo $REBOOT_COMMAND) | crontab -
 
 
@@ -95,5 +95,5 @@ echo "Copying backup script to scripts"
 
 echo "============================"
 echo "Install done!"
-echo "Start the server by: 'cd ~/McMyAdmin && screen -dmS mineserver ./MCMA2_Linux_x86_64'"
-echo "OR use 'sudo reboot' to start server"
+echo "Start the server by: '$REBOOT_COMMAND'"
+echo "OR use 'sudo reboot' and the server will boot on restart"

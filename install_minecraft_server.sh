@@ -50,10 +50,12 @@ sed -i 's|S3_BACKUP_URL=\"s3://some-s3-bucket\"|S3_BACKUP_URL="$S3_BACKUP_URL"|g
 
 
 #setup crontab for scheduled backups
-WEEKLY_FULL_BACKUP="30 5 * * 3 ~/backup_mcmyadmin.sh"
-(crontab -l | grep $WEEKLY_FULL_BACKUP) || (crontab -l 2>/dev/null; echo $WEEKLY_FULL_BACKUP) | crontab -
-DAILY_BACKUP="0 5 * * * ~/backup_saves.sh"
-(crontab -l | grep $DAILY_BACKUP) || (crontab -l 2>/dev/null; echo $DAILY_BACKUP) | crontab -
+WEEKLY_FULL_BACKUP="30 5 * * 3 bash ~/backup_mcmyadmin.sh"
+GREP_ESCAPED=`echo "$WEEKLY_FULL_BACKUP" | sed 's|\*|\\\*|g'`
+(crontab -l | grep "$GREP_ESCAPED") || (crontab -l 2>/dev/null; echo "$WEEKLY_FULL_BACKUP") | crontab -
+DAILY_BACKUP="0 5 * * * bash ~/backup_saves.sh"
+GREP_ESCAPED=`echo "$DAILY_BACKUP" | sed 's|\*|\\\*|g'`
+(crontab -l | grep "$GREP_ESCAPED") || (crontab -l 2>/dev/null; echo "$DAILY_BACKUP") | crontab -
 
 
 
@@ -110,7 +112,7 @@ sudo iptables -A INPUT -p tcp -m tcp --dport $MINECRAFT_PORT -j ACCEPT 			#Defau
 
 #setup crontab to start server when server reboots
 REBOOT_COMMAND="@reboot screen -dmS mineserver ~/McMyAdmin/MCMA2_Linux_x86_64"
-(crontab -l | grep $REBOOT_COMMAND) || (crontab -l 2>/dev/null; echo $REBOOT_COMMAND) | crontab -
+(crontab -l | grep "$REBOOT_COMMAND") || (crontab -l 2>/dev/null; echo "$REBOOT_COMMAND") | crontab -
 
 
 

@@ -3,6 +3,7 @@
 
 #AWS Backup configurations
 S3_BACKUP_URL="s3://some-s3-bucket"
+STORAGE_CLASS="STANDARD_IA"			#choose one of:  STANDARD | REDUCED_REDUNDANCY | STANDARD_IA | ONEZONE_IA
 
 
 #Zip the McMyAdmin Folder
@@ -13,7 +14,7 @@ zip -r ~/$ZIP_BACKUP_NAME ~/McMyAdmin
 
 
 #AWS S3 Backup
-/home/ubuntu/.local/bin/aws s3 cp ~/$ZIP_BACKUP_NAME $S3_BACKUP_URL
+/home/ubuntu/.local/bin/aws s3 cp --storage-class $STORAGE_CLASS ~/$ZIP_BACKUP_NAME $S3_BACKUP_URL
 
 #cleanup
 rm ~/$ZIP_BACKUP_NAME

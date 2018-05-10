@@ -9,7 +9,7 @@ STORAGE_CLASS="STANDARD"			#choose one of:  STANDARD | REDUCED_REDUNDANCY | STAN
 #Zip the McMyAdmin Folder
 cd ~
 ZIP_BACKUP_DATE=`date '+%Y-%m-%d__%H-%M-%S'`
-ZIP_BACKUP_NAME="\"McMyAdmin-Backup-$ZIP_BACKUP_DATE.zip\""
+ZIP_BACKUP_NAME="McMyAdmin-Backup-$ZIP_BACKUP_DATE.zip"
 zip -r ~/$ZIP_BACKUP_NAME ~/McMyAdmin 
 
 

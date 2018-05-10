@@ -1,7 +1,7 @@
 #!/bin/bash
 #backup your minecraft saves as often as you want (daily is cool)
 S3_BACKUP_URL="s3://some-s3-bucket"
-STORAGE_CLASS="STANDARD_IA"			#choose one of:  STANDARD | REDUCED_REDUNDANCY | STANDARD_IA | ONEZONE_IA
+STORAGE_CLASS="STANDARD"			#choose one of:  STANDARD | REDUCED_REDUNDANCY | STANDARD_IA | ONEZONE_IA
 
 #AWS S3 Sync folder
 cd ~

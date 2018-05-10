@@ -100,17 +100,28 @@ rm MCMA2_glibc26_2.zip
 ./MCMA2_Linux_x86_64 -setpass $MCMYADMIN_INITIAL_PASSWORD -configonly
 
 
-#Auto accept EULA
-echo "Auto accepting the Minecraft EULA, see https://account.mojang.com/documents/minecraft_eula"
-mkdir ~/McMyAdmin/Minecraft/
-echo "eula=true" > ~/McMyAdmin/Minecraft/eula.txt
+#Ask the user to accept EULA
+echo "You will need to accept the Minecraft EULA to run the server, see https://account.mojang.com/documents/minecraft_eula"
+CURRENT_DATE=`date -u '+%a %b %d %T UTC %Y'`
+while true; do
+    read -p "Do you accept the EULA?" yn
+    case $yn in
+        [Yy]* ) mkdir ~/McMyAdmin/Minecraft/; printf "#By changing the setting below to TRUE you are indicating your agreement to our EULA (https://account.mojang.com/documents/minecraft_eula).\n$CURRENT_DATE\neula=true" > ~/McMyAdmin/Minecraft/eula.txt; break;;
+        [Nn]* ) echo "You can accept this EULA later in McMyAdmin/Minecraft/eula.txt after you start the Minecraft server"; break;;
+        * ) echo "Please answer yes or no.";;
+    esac
+done
+
 
 #Add ports to firewall
+echo "Adding ports to firewall"
 sudo iptables -A INPUT -p tcp -m tcp --dport 8080 -j ACCEPT 			#McMyAdmin Port
 sudo iptables -A INPUT -p tcp -m tcp --dport $MINECRAFT_PORT -j ACCEPT 			#Default Minecraft Port
 /sbin/iptables-save
 
+
 #setup crontab to start server when server reboots
+echo "Adding  command to launch server on startup."
 REBOOT_COMMAND="@reboot screen -dmS mineserver ~/McMyAdmin/MCMA2_Linux_x86_64"
 (crontab -l | grep "$REBOOT_COMMAND") || (crontab -l 2>/dev/null; echo "$REBOOT_COMMAND") | crontab -
 

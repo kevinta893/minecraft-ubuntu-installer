@@ -72,7 +72,7 @@ sudo pip install --upgrade pip
 
 #amazon aws CLI tool
 pip install awscli --upgrade --user
-echo "Setup your AWS configurations now. You can also skip by entering nothing for the fields"
+echo "Setup your AWS access keys now."
 aws configure
 
 

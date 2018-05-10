@@ -11,7 +11,10 @@ MINECRAFT_PORT=25565				#25565 is the default minecraft port
 #AWS s3 link, you can set this up in the backup scripts individually if not set
 S3_BACKUP_URL="s3://some-s3-bucket"
 
-
+#backup schedule for CRON
+#Setup your backup schedules using this tool here: https://crontab.guru/
+MAP_BACKUP_SCHEDULE="0 4 * * *"
+MCMYADMIN_BACKUP_SCHEDULE="30 4 * * 3"
 
 
 #=======================
@@ -50,12 +53,12 @@ sed -i 's|S3_BACKUP_URL=\"s3://some-s3-bucket\"|S3_BACKUP_URL="$S3_BACKUP_URL"|g
 
 
 #setup crontab for scheduled backups
-WEEKLY_FULL_BACKUP="30 5 * * 3 bash ~/backup_mcmyadmin.sh"
-GREP_ESCAPED=`echo "$WEEKLY_FULL_BACKUP" | sed 's|\*|\\\*|g'`
-(crontab -l | grep "$GREP_ESCAPED") || (crontab -l 2>/dev/null; echo "$WEEKLY_FULL_BACKUP") | crontab -
-DAILY_BACKUP="0 5 * * * bash ~/backup_saves.sh"
-GREP_ESCAPED=`echo "$DAILY_BACKUP" | sed 's|\*|\\\*|g'`
-(crontab -l | grep "$GREP_ESCAPED") || (crontab -l 2>/dev/null; echo "$DAILY_BACKUP") | crontab -
+MCMYADMIN_BACKUP="$MCMYADMIN_BACKUP_SCHEDULE bash ~/backup_mcmyadmin.sh"
+GREP_ESCAPED=`echo "$MCMYADMIN_BACKUP" | sed 's|\*|\\\*|g'`
+(crontab -l | grep "$GREP_ESCAPED") || (crontab -l 2>/dev/null; echo "$MCMYADMIN_BACKUP") | crontab -
+MAP_BACKUP="$MAP_BACKUP_SCHEDULE bash ~/backup_saves.sh"
+GREP_ESCAPED=`echo "$MAP_BACKUP" | sed 's|\*|\\\*|g'`
+(crontab -l | grep "$GREP_ESCAPED") || (crontab -l 2>/dev/null; echo "$MAP_BACKUP") | crontab -
 
 
 
@@ -104,7 +107,7 @@ rm MCMA2_glibc26_2.zip
 echo "You will need to accept the Minecraft EULA to run the server, see https://account.mojang.com/documents/minecraft_eula"
 CURRENT_DATE=`date -u '+%a %b %d %T UTC %Y'`
 while true; do
-    read -p "Do you accept the EULA?" yn
+    read -p "Do you accept the Minecraft EULA? [y/n]" yn
     case $yn in
         [Yy]* ) mkdir ~/McMyAdmin/Minecraft/; printf "#By changing the setting below to TRUE you are indicating your agreement to our EULA (https://account.mojang.com/documents/minecraft_eula).\n$CURRENT_DATE\neula=true" > ~/McMyAdmin/Minecraft/eula.txt; break;;
         [Nn]* ) echo "You can accept this EULA later in McMyAdmin/Minecraft/eula.txt after you start the Minecraft server"; break;;

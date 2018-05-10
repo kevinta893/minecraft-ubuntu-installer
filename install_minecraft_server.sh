@@ -125,7 +125,7 @@ sudo iptables -A INPUT -p tcp -m tcp --dport $MINECRAFT_PORT -j ACCEPT 			#Defau
 
 #setup crontab to start server when server reboots
 echo "Adding  command to launch server on startup."
-REBOOT_COMMAND="@reboot cd ~/McMyAdmin && screen -dmS mineserver ~/McMyAdmin/MCMA2_Linux_x86_64"
+REBOOT_COMMAND="@reboot cd ~/McMyAdmin && screen -dmS mineserver ./MCMA2_Linux_x86_64"
 (crontab -l | grep "$REBOOT_COMMAND") || (crontab -l 2>/dev/null; echo "$REBOOT_COMMAND") | crontab -
 
 

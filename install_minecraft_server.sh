@@ -48,9 +48,8 @@ chmod +x backup_saves.sh
 
 
 #Apply s3 backup URL to scripts
-sed -i 's|S3_BACKUP_URL=\"s3://some-s3-bucket\"|S3_BACKUP_URL="$S3_BACKUP_URL"|g' backup_mcmyadmin.sh
-sed -i 's|S3_BACKUP_URL=\"s3://some-s3-bucket\"|S3_BACKUP_URL="$S3_BACKUP_URL"|g' backup_saves.sh
-
+sed -i "s|S3_BACKUP_URL=\"s3://some-s3-bucket\"|S3_BACKUP_URL=\"$S3_BACKUP_URL\"|g" backup_mcmyadmin.sh
+sed -i "s|S3_BACKUP_URL=\"s3://some-s3-bucket\"|S3_BACKUP_URL=\"$S3_BACKUP_URL\"|g" backup_saves.sh
 
 #setup crontab for scheduled backups
 MCMYADMIN_BACKUP="$MCMYADMIN_BACKUP_SCHEDULE bash ~/backup_mcmyadmin.sh"

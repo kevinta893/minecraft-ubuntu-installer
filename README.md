@@ -1,4 +1,4 @@
-# Minecraft Unbuntu Installer
+# Minecraft Ubuntu Installer
 
 Want to spin up a Minecraft server with automated backups to Amazon AWS? Sure heck you can. I made this script to help spin up an instance of Minecraft on McMyAdmin and used AWS S3/Glacier as cheap offsite backup. I recommend using Ubuntu Trusty or Xenial as these are what I test the scripts against.
 

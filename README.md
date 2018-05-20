@@ -1,8 +1,7 @@
 # Minecraft Ubuntu Installer
 
-Want to spin up a Minecraft server with automated backups to Amazon AWS? Sure heck you can. I made this script to help spin up an instance of Minecraft on McMyAdmin and used AWS S3/Glacier as cheap offsite backup. I recommend using Ubuntu Trusty or Xenial as these are what I test the scripts against.
+Want to spin up a Minecraft server with automated backups to Amazon AWS? Sure you can. I made this script to help spin up an instance of Minecraft on McMyAdmin and used AWS S3 as cheap offsite backup. I recommend using Ubuntu Trusty or Xenial as these are what I tested the scripts against.
 
-Note: Script is still under developement
 
 ## Setup Walkthrough
 
@@ -78,4 +77,15 @@ I also recommend setting object lifecycle policies for migrating your backups in
 
 Take care when restoring backups. Make sure you test the backup on a seperate instance before restoring.
 
-(coming soon...)
+### Restoring a World
+
+1. Move the desired .mb2 world backup file into McMyAdmin/Backups
+2. Login to McMyAdmin's web console
+3. Select your backup file and restore the backup
+
+Note: You need not to set the seed for the world as this is saved in McMyAdmin. Leave the preferences blank for the seed. The command is "/seed" in the Minecraft console.
+
+### Restoring a Configuration file
+
+Simply upload the configuration file for McMyAdmin into the same folder. That or copy the settings that you had before into the McMyAdmin web console.
+
